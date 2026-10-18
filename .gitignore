@@ -1,0 +1,12 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+.env
+.env.*
+!.env.example
+*.log
+.vercel/
+
+# Downloaded HuBMAP source model (23 MB). URL, size and sha256 are in src/lungs/generated/provenance.json
+/source/

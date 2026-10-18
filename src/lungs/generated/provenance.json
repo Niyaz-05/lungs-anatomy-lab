@@ -1,0 +1,533 @@
+{
+  "output": {
+    "file": "public/models/lungs.glb",
+    "bytes": 3059948,
+    "sha256": "d8a8a24c0ce28780564e4ad773b6357ee12e39b8c78d48260f3de38bbf409cf7",
+    "triangles": 122199,
+    "sourceTriangles": 331350
+  },
+  "sources": {
+    "lung": {
+      "name": "3D Reference Organ for Lung, Female, v1.4 (HuBMAP Human Reference Atlas)",
+      "creators": "Kristen Browne, Heidi Schlehlein",
+      "doi": "https://doi.org/10.48539/HBM994.HXJP.575",
+      "license": "CC-BY-4.0",
+      "url": "https://cdn.humanatlas.io/digital-objects/ref-organ/lung-female/v1.4/assets/3d-vh-f-lung.glb",
+      "bytes": 23255188,
+      "sha256": "101f48ec64f2ed762fde03fc1193eaae583a0d35c47b72a9ca007d72eefb5f71",
+      "basedOn": "Visible Human Dataset, U.S. National Library of Medicine (Spitzer & Whitlock 1998)"
+    },
+    "united": {
+      "name": "3D Reference Organ Set for Female v1.5 (HuBMAP HRA united female), as converted by Female Atlas",
+      "creators": "Kristen Browne, Heidi Schlehlein",
+      "doi": "https://doi.org/10.48539/HBM352.BTSQ.586",
+      "license": "CC-BY-4.0",
+      "intermediate": "github.com/Niyaz-05/female-atlas (MIT code), commit 4c2dfcca02739b59827601915128ee64abdff2ea",
+      "atlasJsonSha256": "5fec63b2ebcb76ecd9c33027ed725e8ec0a7a76b756f72681285410072ae5c51",
+      "chunkSha256": {
+        "female-6.bin": "e9d9b27b52799f9ce155f666a93f2150c6822e9dc6669ab87f4d3a2df1eae9f0"
+      },
+      "transformReversed": "y - 0.794760942 m (verified: all 56 shared lung meshes differ from the official file by exactly this translation)"
+    }
+  },
+  "changesHere": "Selected the nodes in src/lungs/source/structures.source.json; welded coincident vertices; recomputed smooth normals; simplified each mesh with meshoptimizer within a 0.2 % relative error bound (largest error used: 0.200 %); merged into one node per structure; translated so the centre of the lung segments is the origin.",
+  "centreOffsetMetres": [
+    -0.00494,
+    0.478591,
+    -0.080135
+  ],
+  "orientationChecks": {
+    "tracheaAboveCarina": true,
+    "larynxAboveTrachea": true,
+    "upperLobeAboveLower": true,
+    "anteriorSegmentInFront": true,
+    "middleLobeOnRight": true
+  },
+  "structures": [
+    {
+      "id": "right-apical-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_apical_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "right-posterior-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_posterior_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "right-anterior-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_anterior_bronchopulmonary_segm"
+      ]
+    },
+    {
+      "id": "right-lateral-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_lateral_bronchopulmonary_segmennt"
+      ]
+    },
+    {
+      "id": "right-medial-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_medial_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "right-superior-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_superior_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "right-medial-basal-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_medial_basal_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "right-anterior-basal-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_anterior_basal_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "right-lateral-basal-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_lateral_basal_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "right-posterior-basal-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_posterior_basal_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "left-apical-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_apical_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "left-posterior-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_posterior_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "left-anterior-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_anterior_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "left-superior-lingular-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_lingula_superior_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "left-inferior-lingular-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_lingula_inferior_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "left-superior-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_superior_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "left-medial-basal-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_medial_basal_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "left-anterior-basal-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_anterior_basal_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "left-lateral-basal-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_lateral_basal_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "left-posterior-basal-segment",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_posterior_basal_bronchopulmonary_segment"
+      ]
+    },
+    {
+      "id": "right-upper-lobar-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_superior_lobar_bronchus"
+      ]
+    },
+    {
+      "id": "right-middle-lobar-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_middle_lobar_bronchus"
+      ]
+    },
+    {
+      "id": "right-lower-lobar-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_inferior_lobar_bronchus"
+      ]
+    },
+    {
+      "id": "left-upper-lobar-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_superior_lobar_bronchus"
+      ]
+    },
+    {
+      "id": "left-lower-lobar-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_inferior_lobar_bronchus"
+      ]
+    },
+    {
+      "id": "right-apical-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_apical_bronchus"
+      ]
+    },
+    {
+      "id": "right-posterior-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_posterior_bronchus"
+      ]
+    },
+    {
+      "id": "right-anterior-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_anterior_bronchus"
+      ]
+    },
+    {
+      "id": "right-lateral-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_lateral_bronchus"
+      ]
+    },
+    {
+      "id": "right-medial-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_medial_bronchus"
+      ]
+    },
+    {
+      "id": "right-superior-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_superior_bronchus"
+      ]
+    },
+    {
+      "id": "right-medial-basal-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_medial_basal_bronchus"
+      ]
+    },
+    {
+      "id": "right-anterior-basal-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_anterior_basal_bronchus"
+      ]
+    },
+    {
+      "id": "right-lateral-basal-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_lateral_basal_bronchus"
+      ]
+    },
+    {
+      "id": "right-posterior-basal-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_right_posterior_basal_bronchus"
+      ]
+    },
+    {
+      "id": "left-apical-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_apical_bronchus"
+      ]
+    },
+    {
+      "id": "left-posterior-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_posterior_bronchus"
+      ]
+    },
+    {
+      "id": "left-anterior-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_anterior_bronchus"
+      ]
+    },
+    {
+      "id": "left-superior-lingular-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_lingula_superior_bronchus"
+      ]
+    },
+    {
+      "id": "left-inferior-lingular-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_lingula_inferior_bronchi"
+      ]
+    },
+    {
+      "id": "left-superior-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_superior_bronchus"
+      ]
+    },
+    {
+      "id": "left-medial-basal-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_medial_basal_bronchus"
+      ]
+    },
+    {
+      "id": "left-anterior-basal-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_anterior_basal_bronchus"
+      ]
+    },
+    {
+      "id": "left-lateral-basal-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_lateral_basal_bronchus"
+      ]
+    },
+    {
+      "id": "left-posterior-basal-bronchus",
+      "source": "lung",
+      "nodes": [
+        "VH_F_left_posterior_basal_bronchus"
+      ]
+    },
+    {
+      "id": "trachea",
+      "source": "united",
+      "nodes": [
+        "VH_F_trachea"
+      ]
+    },
+    {
+      "id": "carina",
+      "source": "united",
+      "nodes": [
+        "VH_F_carina"
+      ]
+    },
+    {
+      "id": "right-main-bronchus",
+      "source": "united",
+      "nodes": [
+        "VH_F_right_main_bronchus"
+      ]
+    },
+    {
+      "id": "left-main-bronchus",
+      "source": "united",
+      "nodes": [
+        "VH_F_left_main_bronchus"
+      ]
+    },
+    {
+      "id": "tracheal-cartilage",
+      "source": "united",
+      "nodes": [
+        "VH_F_tracheal_cartilage"
+      ]
+    },
+    {
+      "id": "right-main-bronchus-cartilage",
+      "source": "united",
+      "nodes": [
+        "VH_F_cartilage_of_main_bronchus_R"
+      ]
+    },
+    {
+      "id": "left-main-bronchus-cartilage",
+      "source": "united",
+      "nodes": [
+        "VH_F_cartilage_of_main_bronchus_L"
+      ]
+    },
+    {
+      "id": "right-bronchial-cartilage",
+      "source": "lung",
+      "nodes": [
+        "VH_F_cartilage_of_lobar_bronchus_R",
+        "VH_F_cartilage_of_tertiary_bronchus_R"
+      ]
+    },
+    {
+      "id": "left-bronchial-cartilage",
+      "source": "lung",
+      "nodes": [
+        "VH_F_cartilage_of_lobar_bronchus_L",
+        "VH_F_cartilage_of_tertiary_bronchus_L"
+      ]
+    },
+    {
+      "id": "thyroid-cartilage",
+      "source": "united",
+      "nodes": [
+        "VH_F_thyroid_cartilage"
+      ]
+    },
+    {
+      "id": "cricoid-cartilage",
+      "source": "united",
+      "nodes": [
+        "VH_F_cricoid_cartilage"
+      ]
+    },
+    {
+      "id": "epiglottis",
+      "source": "united",
+      "nodes": [
+        "VH_F_epiglotic_cartilage"
+      ]
+    },
+    {
+      "id": "arytenoid-cartilages",
+      "source": "united",
+      "nodes": [
+        "VH_F_arytenoid_cartilage_R",
+        "VH_F_arytenoid_cartilage_L"
+      ]
+    },
+    {
+      "id": "corniculate-cartilages",
+      "source": "united",
+      "nodes": [
+        "VH_F_corniculate_cartilage_R",
+        "VH_F_corniculate_cartilage_L"
+      ]
+    },
+    {
+      "id": "right-hilum",
+      "source": "lung",
+      "nodes": [
+        "VH_F_hilum_R",
+        "VH_F_hilum_upper_R",
+        "VH_F_hilum_middle_R",
+        "VH_F_hilum_lower_R"
+      ]
+    },
+    {
+      "id": "left-hilum",
+      "source": "lung",
+      "nodes": [
+        "VH_F_hilum_L",
+        "VH_F_hilum_upper_L",
+        "VH_F_hilum_lower_L"
+      ]
+    },
+    {
+      "id": "pulmonary-trunk",
+      "source": "united",
+      "nodes": [
+        "VH_F_pulmonary_trunk"
+      ]
+    },
+    {
+      "id": "right-pulmonary-artery",
+      "source": "united",
+      "nodes": [
+        "VH_F_pulmonary_artery_R"
+      ]
+    },
+    {
+      "id": "left-pulmonary-artery",
+      "source": "united",
+      "nodes": [
+        "VH_F_pulmonary_artery_L"
+      ]
+    },
+    {
+      "id": "right-superior-pulmonary-vein",
+      "source": "united",
+      "nodes": [
+        "VH_F_pulmonary_vein_R_sup"
+      ]
+    },
+    {
+      "id": "right-inferior-pulmonary-vein",
+      "source": "united",
+      "nodes": [
+        "VH_F_pulmonary_vein_R_inf"
+      ]
+    },
+    {
+      "id": "left-superior-pulmonary-vein",
+      "source": "united",
+      "nodes": [
+        "VH_F_pulmonary_vein_L_sup"
+      ]
+    },
+    {
+      "id": "left-inferior-pulmonary-vein",
+      "source": "united",
+      "nodes": [
+        "VH_F_pulmonary_vein_L_inf"
+      ]
+    }
+  ]
+}
