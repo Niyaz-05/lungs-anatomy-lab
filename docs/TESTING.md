@@ -44,6 +44,7 @@ Results recorded on 2026-10-17 on Windows 11, Node 22.14.0, headless Chromium (P
 | `npm run build` | **Pass**. JS bundle about 1.45 MB (about 400 kB gzip); Vite warns about chunk size |
 | `npm run e2e` | **Pass**: 16/16 in 3.0 min (software WebGL), final clean run on the latest code |
 | `npm audit` | 0 vulnerabilities at install time |
+| Live site (2026-10-18) | **Pass**: https://lungs-anatomy-lab.vercel.app returns the page; `models/lungs.glb` is served with the recorded sha256 `d8a8a24c…`; the model renders in headless Chromium with no console errors |
 
 ## Defects found and fixed during QA
 

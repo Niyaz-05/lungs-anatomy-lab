@@ -1,5 +1,7 @@
 # Human Lungs — Interactive 3D Learning Lab
 
+**Live:** https://lungs-anatomy-lab.vercel.app
+
 An interactive 3D model of the human lungs for secondary-school and first-year biology:
 
 - **Anatomy:** select, search and isolate the larynx cartilages, trachea and carina, main, lobar and segmental bronchi, the 5 lobes and 20 bronchopulmonary segments, the hilum and the pulmonary vessels.
@@ -48,6 +50,10 @@ node tools/validate-assets.mjs
 ```
 
 The extraction is deterministic, and its inputs and output are hashed in `src/lungs/generated/provenance.json`.
+
+## Deploy
+
+The site is a Vercel project (Vite preset, output `dist/`) connected to [github.com/Niyaz-05/lungs-anatomy-lab](https://github.com/Niyaz-05/lungs-anatomy-lab). Every push to `main` deploys to https://lungs-anatomy-lab.vercel.app; pushes to other branches get preview URLs.
 
 ## Layout
 
