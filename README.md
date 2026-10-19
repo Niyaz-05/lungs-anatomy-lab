@@ -5,6 +5,7 @@
 An interactive 3D model of the human lungs for secondary-school and first-year biology:
 
 - **Anatomy:** select, search and isolate the larynx cartilages, trachea and carina, main, lobar and segmental bronchi, the 5 lobes and 20 bronchopulmonary segments, the hilum and the pulmonary vessels.
+- **Real look:** the lungs look as they do in a specimen: salmon-pink with grey mottling, pale airways, real vessel colours.
 - **Lobes & segments explorer:** colour the lungs by lobe or by segment. Each segment links to its own segmental bronchus.
 - **Breathing:** a schematic breathing cycle with a rate slider. The lungs expand and recoil, and airflow particles run from the larynx to every segment and back out. The panel explains each phase (diaphragm, intercostals, passive recoil).
 - **Guided tour:** the route of air from the larynx to the alveoli, then breathing in and out.
@@ -46,6 +47,7 @@ See [docs/TESTING.md](docs/TESTING.md) for results and what is not verified.
 
 ```sh
 node tools/extract-lungs.mjs source/hra-lung-female-v1.4/3d-vh-f-lung.glb "<female-atlas>/public/models"
+node tools/bake-shading.mjs      # baked shading for the real-tissue look
 node tools/validate-assets.mjs
 ```
 

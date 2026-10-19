@@ -1,8 +1,8 @@
 {
   "output": {
     "file": "public/models/lungs.glb",
-    "bytes": 3059948,
-    "sha256": "d8a8a24c0ce28780564e4ad773b6357ee12e39b8c78d48260f3de38bbf409cf7",
+    "bytes": 3327592,
+    "sha256": "34e61e6eca96b32e1eef4d241c957b1946e047e3a2a90ea179f564a53d48d7a8",
     "triangles": 122199,
     "sourceTriangles": 331350
   },
@@ -529,5 +529,86 @@
         "VH_F_pulmonary_vein_L_inf"
       ]
     }
-  ]
+  ],
+  "shadingBake": {
+    "tool": "tools/bake-shading.mjs",
+    "config": {
+      "$comment": "Shading bake for the real-tissue look (tools/bake-shading.mjs). occluders: which layers can shade each layer. The airways are not shaded by the lung tissue around them (so they stay readable when the lungs turn see-through) nor by the cartilage rings, which are hidden by default.",
+      "model": "public/models/lungs.glb",
+      "provenance": "src/lungs/generated/provenance.json",
+      "aoDistance": 0.014,
+      "rays": 48,
+      "rayOffset": 0.0003,
+      "noiseFrequency": 240,
+      "occluders": {
+        "segment": [
+          "segment",
+          "hilum",
+          "vessel"
+        ],
+        "airway": [
+          "airway",
+          "larynx"
+        ],
+        "cartilage": [
+          "cartilage",
+          "airway",
+          "larynx"
+        ],
+        "larynx": [
+          "larynx",
+          "airway",
+          "cartilage"
+        ],
+        "hilum": [
+          "hilum",
+          "segment",
+          "vessel"
+        ],
+        "vessel": [
+          "vessel",
+          "hilum"
+        ]
+      },
+      "fat": null
+    },
+    "attribute": "_TISSUE (VEC4 unsigned byte, normalised): r ambient occlusion, g mottling noise, b fat proximity, a unused",
+    "unbakedSha256": "d8a8a24c0ce28780564e4ad773b6357ee12e39b8c78d48260f3de38bbf409cf7",
+    "unbakedOutput": {
+      "bytes": 3059948
+    },
+    "vertices": 64309,
+    "layers": {
+      "segment": {
+        "meshes": 20,
+        "meanAO": 0.923,
+        "vertices": 5664
+      },
+      "airway": {
+        "meshes": 29,
+        "meanAO": 0.936,
+        "vertices": 9395
+      },
+      "cartilage": {
+        "meshes": 5,
+        "meanAO": 0.675,
+        "vertices": 36875
+      },
+      "larynx": {
+        "meshes": 5,
+        "meanAO": 0.764,
+        "vertices": 4125
+      },
+      "hilum": {
+        "meshes": 2,
+        "meanAO": 0.675,
+        "vertices": 3495
+      },
+      "vessel": {
+        "meshes": 7,
+        "meanAO": 0.791,
+        "vertices": 4755
+      }
+    }
+  }
 }

@@ -5,7 +5,7 @@
 import type { SimulationDefinition } from '../contract/schema';
 
 export type Mode = 'explore' | 'breathe' | 'tour';
-export type ColourBy = 'lobe' | 'segment';
+export type ColourBy = 'real' | 'lobe' | 'segment';
 
 export interface LabState {
   mode: Mode;
@@ -46,7 +46,7 @@ export function initialState(def: SimulationDefinition): LabState {
     visibleLayers: new Set(def.layers.filter((l) => l.visibleByDefault).map((l) => l.id)),
     isolate: false,
     labels: false,
-    colourBy: 'lobe',
+    colourBy: 'real',
     playing: true,
     rate: def.breathing.defaultRate,
     tourIndex: 0,
@@ -70,6 +70,12 @@ export function highlightedIds(def: SimulationDefinition, ids: readonly string[]
 export function focusIds(def: SimulationDefinition, state: LabState): string[] {
   if (state.mode === 'tour') return [...(def.tour[state.tourIndex]?.focus ?? [])];
   return state.selected ? [state.selected] : [];
+}
+
+/** The colour mode in effect: a tour step can set its own. */
+export function effectiveColourBy(def: SimulationDefinition, state: LabState): ColourBy {
+  if (state.mode === 'tour') return def.tour[state.tourIndex]?.colourBy ?? 'real';
+  return state.colourBy;
 }
 
 /** True while the breathing animation and airflow should show. */

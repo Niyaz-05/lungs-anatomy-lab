@@ -8,6 +8,7 @@ import { CameraRig, type ViewInsets } from './CameraRig';
 import { AirflowParticles } from './AirflowParticles';
 import { breathClock } from './breathClock';
 import { LabelLayer } from './LabelLayer';
+import { Lighting } from './Lighting';
 import { hasWebGL, prefersReducedMotion } from './webgl';
 import { homeBounds } from '../lungs/anchors';
 import { breathingActive } from '../app/state';
@@ -75,7 +76,8 @@ function BreathDriver({ running, rate, inspirationFraction }: { running: boolean
     breathClock.update();
   }, [rate, inspirationFraction]);
   useFrame((_, dt) => {
-    if (running) breathClock.advance(Math.min(dt, 0.05));
+    // Cap long frames (tab switches) but keep near real time on slow devices.
+    if (running) breathClock.advance(Math.min(dt, 0.25));
   });
   return null;
 }
@@ -158,9 +160,7 @@ export function LabViewer({ insets = NO_INSETS }: { insets?: ViewInsets }) {
             }}
             aria-hidden="true"
           >
-            <hemisphereLight args={['#ffffff', '#8a8076', 1.0]} />
-            <directionalLight position={[0.4, 0.6, 0.8]} intensity={1.6} />
-            <directionalLight position={[-0.6, -0.2, -0.5]} intensity={0.55} />
+            <Lighting />
             <Suspense fallback={null}>
               <LungModel onReady={onReady} reducedMotion={reducedMotion} />
             </Suspense>

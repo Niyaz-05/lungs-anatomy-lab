@@ -52,9 +52,10 @@ export function AboutSheet({ onClose }: { onClose: () => void }) {
           <span><span className="dot" style={{ background: AIR.exhaled }} aria-hidden="true" /> Exhaled air out</span>
         </p>
         <p className="small muted">
-          In the pulmonary vessels, blue shows oxygen-poor blood and red oxygen-rich blood. The pulmonary arteries carry
-          oxygen-poor blood to the lungs and the pulmonary veins bring oxygen-rich blood back, because "artery" and
-          "vein" describe direction relative to the heart, not oxygen content.
+          “Real” shows the lungs as they look in a specimen: salmon-pink lung with grey mottling, pale airways and
+          cartilage, and real vessel colours. “Lobe” and “Segment” paint the lung tissue to teach its divisions. The
+          pulmonary arteries carry oxygen-poor blood to the lungs and the pulmonary veins bring oxygen-rich blood back,
+          because "artery" and "vein" describe direction relative to the heart, not oxygen content.
         </p>
 
         <h3 className="group-title">Breathing model</h3>

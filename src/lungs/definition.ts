@@ -357,17 +357,17 @@ export const lungsDefinition: SimulationDefinition = {
       body: 'Each main bronchus carries air into one lung. Like the trachea, its wall is held open by cartilage.',
     },
     {
-      id: 'lobes', title: 'Three lobes on the right, two on the left', camera: 'anterior',
+      id: 'lobes', title: 'Three lobes on the right, two on the left', camera: 'anterior', colourBy: 'lobe',
       focus: ['right-upper-lobe', 'right-middle-lobe', 'right-lower-lobe', 'left-upper-lobe', 'left-lower-lobe'],
       body: 'The right lung has upper, middle and lower lobes. The left lung has only upper and lower lobes, and a notch on its inner edge leaves room for the heart.',
     },
     {
-      id: 'lobar-bronchi', title: 'One bronchus for each lobe', camera: 'anterior', routeStep: 5,
+      id: 'lobar-bronchi', title: 'One bronchus for each lobe', camera: 'anterior', routeStep: 5, colourBy: 'lobe',
       focus: ['right-upper-lobar-bronchus', 'right-middle-lobar-bronchus', 'right-lower-lobar-bronchus', 'left-upper-lobar-bronchus', 'left-lower-lobar-bronchus'],
       body: 'Each main bronchus divides into lobar bronchi: three on the right and two on the left, one for every lobe.',
     },
     {
-      id: 'segments', title: 'Segments and their bronchi', camera: 'right', focus: ['right-apical-bronchus', 'right-apical-segment'], routeStep: 7,
+      id: 'segments', title: 'Segments and their bronchi', camera: 'right', focus: ['right-apical-bronchus', 'right-apical-segment'], routeStep: 7, colourBy: 'segment',
       body: 'Each lobe is divided into bronchopulmonary segments, ten in each lung in this model. Every segment has its own segmental (tertiary) bronchus and its own artery. Here is the apical segment of the right upper lobe with its bronchus.',
     },
     {

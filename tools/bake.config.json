@@ -1,0 +1,18 @@
+{
+  "$comment": "Shading bake for the real-tissue look (tools/bake-shading.mjs). occluders: which layers can shade each layer. The airways are not shaded by the lung tissue around them (so they stay readable when the lungs turn see-through) nor by the cartilage rings, which are hidden by default.",
+  "model": "public/models/lungs.glb",
+  "provenance": "src/lungs/generated/provenance.json",
+  "aoDistance": 0.014,
+  "rays": 48,
+  "rayOffset": 0.0003,
+  "noiseFrequency": 240,
+  "occluders": {
+    "segment": ["segment", "hilum", "vessel"],
+    "airway": ["airway", "larynx"],
+    "cartilage": ["cartilage", "airway", "larynx"],
+    "larynx": ["larynx", "airway", "cartilage"],
+    "hilum": ["hilum", "segment", "vessel"],
+    "vessel": ["vessel", "hilum"]
+  },
+  "fat": null
+}

@@ -111,6 +111,8 @@ export const TourStep = z.object({
   camera: Id.optional(),
   /** Air-route step this tour step corresponds to; such steps run the breathing animation. */
   routeStep: z.number().int().min(0).optional(),
+  /** Colour mode for this step (the lungs look real unless a step teaches lobes or segments). */
+  colourBy: z.enum(['real', 'lobe', 'segment']).optional(),
 });
 export type TourStep = z.infer<typeof TourStep>;
 

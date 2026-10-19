@@ -3,7 +3,8 @@ import { defineConfig, devices } from '@playwright/test';
 /** E2E runs against the production build served by `vite preview`; run `npm run build` first. */
 export default defineConfig({
   testDir: 'tests/e2e',
-  timeout: 120_000,
+  // Software WebGL compiles the tissue shaders slowly (tens of seconds on first use).
+  timeout: 240_000,
   expect: { timeout: 15_000 },
   fullyParallel: false,
   workers: 1,

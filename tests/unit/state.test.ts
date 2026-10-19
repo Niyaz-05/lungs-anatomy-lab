@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { lungsDefinition as def } from '../../src/lungs/definition';
-import { breathingActive, highlightedIds, initialState, isVisible, makeReducer } from '../../src/app/state';
+import { breathingActive, effectiveColourBy, highlightedIds, initialState, isVisible, makeReducer } from '../../src/app/state';
 import { searchStructures } from '../../src/app/search';
 
 const reduce = makeReducer(def);
@@ -12,7 +12,7 @@ describe('lab state', () => {
     expect(isVisible(def, s, 'trachea')).toBe(true);
     expect(isVisible(def, s, 'tracheal-cartilage')).toBe(false);
     expect(isVisible(def, s, 'pulmonary-trunk')).toBe(false);
-    expect(s.colourBy).toBe('lobe');
+    expect(s.colourBy).toBe('real');
     expect(s.rate).toBe(def.breathing.defaultRate);
   });
 
@@ -50,13 +50,24 @@ describe('lab state', () => {
     expect(breathingActive(def, s)).toBe(false);
   });
 
+  it('looks real by default; tour steps on lobes and segments paint them, then the learner’s choice returns', () => {
+    let s = reduce(initialState(def), { type: 'set-mode', mode: 'tour' });
+    expect(effectiveColourBy(def, s)).toBe('real');
+    s = reduce(s, { type: 'tour-go', index: def.tour.findIndex((t) => t.id === 'lobes') });
+    expect(effectiveColourBy(def, s)).toBe('lobe');
+    s = reduce(s, { type: 'tour-go', index: def.tour.findIndex((t) => t.id === 'segments') });
+    expect(effectiveColourBy(def, s)).toBe('segment');
+    s = reduce(s, { type: 'set-mode', mode: 'explore' });
+    expect(effectiveColourBy(def, s)).toBe('real');
+  });
+
   it('reset restores defaults', () => {
     let s = reduce(initialState(def), { type: 'select', id: 'carina' });
     s = reduce(s, { type: 'set-colour-by', value: 'segment' });
     s = reduce(s, { type: 'toggle-layer', layer: 'airway' });
     s = reduce(s, { type: 'reset' });
     expect(s.selected).toBeNull();
-    expect(s.colourBy).toBe('lobe');
+    expect(s.colourBy).toBe('real');
     expect(s.visibleLayers.has('airway')).toBe(true);
   });
 });

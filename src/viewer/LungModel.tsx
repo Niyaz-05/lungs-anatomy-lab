@@ -3,15 +3,16 @@ import { useGLTF } from '@react-three/drei';
 import { useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 import { useLab } from '../app/LabContext';
-import { breathingActive, focusIds, highlightedIds, isVisible } from '../app/state';
+import { breathingActive, effectiveColourBy, focusIds, highlightedIds, isVisible } from '../app/state';
 import type { AnatomicalStructure } from '../contract/schema';
 import { hilumPivot } from '../lungs/anchors';
-import { baseColour, HIGHLIGHT, HOVER } from './palette';
+import { baseColour, HIGHLIGHT, HOVER, realLook } from './palette';
+import { applyQuality, hasTissueData, makeTissueMaterial, quality, type TissueMaterial } from './tissue';
 import { breathClock } from './breathClock';
 
 export const MODEL_URL = `${import.meta.env.BASE_URL}models/lungs.glb`;
 
-const GREY = new THREE.Color('#9aa3aa');
+const GREY = new THREE.Color('#a39d9b');
 const HIGHLIGHT_COLOUR = new THREE.Color(HIGHLIGHT);
 
 /** Pointer travel (px) above which a press is treated as a drag (rotate), not a pick. */
@@ -20,7 +21,7 @@ const CLICK_SLOP = 5;
 interface Part {
   id: string;
   mesh: THREE.Mesh;
-  material: THREE.MeshStandardMaterial;
+  material: TissueMaterial;
   structure: AnatomicalStructure;
   /** Moves with the lung while breathing (segments and everything inside the lung). */
   breathes: boolean;
@@ -46,11 +47,7 @@ export function LungModel({ onReady, reducedMotion }: { onReady?: () => void; re
       const id = o.name || o.parent?.name || '';
       const s = def.structures.find((x) => x.id === id);
       if (!s) return;
-      const material = new THREE.MeshStandardMaterial({
-        roughness: s.layer === 'segment' ? 0.75 : 0.55,
-        metalness: 0.02,
-        side: THREE.DoubleSide,
-      });
+      const material = makeTissueMaterial(realLook(s), hasTissueData(o));
       const b = breathes(s);
       out.set(id, { id, mesh: o, material, structure: s, breathes: b, pivot: b && s.side !== 'midline' ? pivots[s.side] : null });
     });
@@ -68,9 +65,16 @@ export function LungModel({ onReady, reducedMotion }: { onReady?: () => void; re
     return () => parts.forEach((p) => p.material.dispose());
   }, [parts, onReady]);
 
+  // Follow quality changes (a slow device drops the costly coat and sheen).
+  useEffect(() => quality.subscribe((level) => {
+    for (const p of parts.values()) { applyQuality(p.material, level); p.material.needsUpdate = true; }
+    invalidate();
+  }), [parts, invalidate]);
+
   const focus = focusIds(def, state);
   const lit = highlightedIds(def, focus);
   const breathing = breathingActive(def, state);
+  const colourBy = effectiveColourBy(def, state);
 
   useEffect(() => {
     for (const p of parts.values()) {
@@ -79,22 +83,26 @@ export function LungModel({ onReady, reducedMotion }: { onReady?: () => void; re
       const isLit = lit.has(p.id);
       const isHover = state.hovered === p.id && !isLit;
       const dim = lit.size > 0 && !isLit;
-      p.material.color.set(baseColour(s, state.colourBy));
-      // Lung tissue keeps its lobe/segment colour when highlighted (the colour is the lesson);
-      // it stands out by becoming more opaque and glowing in its own hue. Other parts turn amber.
-      const ownGlow = s.layer === 'segment';
+      p.material.color.set(baseColour(s, colourBy));
+      // Painted lung tissue keeps its lobe/segment colour when highlighted (the colour is the
+      // lesson); it stands out by becoming more opaque and glowing in its own hue. Real tissue and
+      // other parts take an amber tint.
+      const ownGlow = s.layer === 'segment' && colourBy !== 'real';
       if (isLit && !ownGlow) p.material.color.lerp(HIGHLIGHT_COLOUR, 0.3);
       else if (dim) p.material.color.lerp(GREY, 0.5);
       if (isLit) p.material.emissive.copy(ownGlow ? p.material.color : HIGHLIGHT_COLOUR);
       else p.material.emissive.set(isHover ? HOVER : '#000000');
       p.material.emissiveIntensity = isLit ? (ownGlow ? 0.18 : 0.35) : isHover ? 0.3 : 0;
 
-      // Lung tissue is see-through so the bronchial tree inside stays visible.
+      // Real lungs are opaque. While breathing, in the lobe and segment views, and whenever an
+      // airway or vessel is picked, the lung tissue turns see-through so the bronchial tree shows.
       let opacity = 1;
       if (s.layer === 'segment') {
-        if (isLit) opacity = 0.85;
+        if (isLit) opacity = colourBy === 'real' ? 1 : 0.85;
         else if (lit.size > 0) opacity = 0.14;
-        else opacity = breathing ? 0.26 : state.colourBy === 'segment' ? 0.55 : 0.36;
+        else if (breathing) opacity = 0.26;
+        else if (colourBy === 'segment') opacity = 0.55;
+        else if (colourBy === 'lobe') opacity = 0.36;
       } else if (dim) {
         opacity = 0.45;
       }
@@ -107,7 +115,7 @@ export function LungModel({ onReady, reducedMotion }: { onReady?: () => void; re
       p.mesh.renderOrder = transparent ? 1 : 0;
     }
     invalidate();
-  }, [parts, def, state, lit, breathing, invalidate]);
+  }, [parts, def, state, lit, breathing, colourBy, invalidate]);
 
   // Breathing: expand and recoil about each hilum, following the shared clock.
   useFrame(() => {

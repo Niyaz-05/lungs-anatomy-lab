@@ -26,7 +26,7 @@ export function StructurePanel() {
           onMouseEnter={() => dispatch({ type: 'hover', id: s.kind === 'mesh' ? s.id : null })}
           onMouseLeave={() => dispatch({ type: 'hover', id: null })}
         >
-          {swatch && <span className="dot" aria-hidden="true" style={{ background: baseColour(s, state.colourBy) }} />}
+          {swatch && <span className="dot" aria-hidden="true" style={{ background: baseColour(s, state.colourBy === 'real' ? 'lobe' : state.colourBy) }} />}
           {s.label}
           {!shown && <span className="tag">hidden</span>}
         </button>
@@ -79,9 +79,9 @@ export function StructurePanel() {
           <div className="colour-by" role="radiogroup" aria-label="Colour lungs by">
             <span className="group-title">Colour by</span>
             <div className="seg-toggle">
-              {(['lobe', 'segment'] as const).map((c) => (
+              {(['real', 'lobe', 'segment'] as const).map((c) => (
                 <button key={c} type="button" role="radio" aria-checked={state.colourBy === c} onClick={() => dispatch({ type: 'set-colour-by', value: c })}>
-                  {c === 'lobe' ? 'Lobe' : 'Segment'}
+                  {c === 'real' ? 'Real' : c === 'lobe' ? 'Lobe' : 'Segment'}
                 </button>
               ))}
             </div>

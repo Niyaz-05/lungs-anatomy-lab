@@ -53,6 +53,9 @@ for (const node of nodes) {
     const vCount = pos.length / 3;
     for (const i of idx) if (i >= vCount) { fail(`${id}: index ${i} >= vertex count ${vCount}`); break; }
     if (idx.length % 3) fail(`${id}: index count ${idx.length} not divisible by 3`);
+    const tissue = prim.getAttribute('_TISSUE');
+    if (!tissue) fail(`${id}: no baked _TISSUE shading attribute (run tools/bake-shading.mjs)`);
+    else if (tissue.getCount() !== pos.length / 3 || tissue.getElementSize() !== 4 || !tissue.getNormalized()) fail(`${id}: _TISSUE must be normalised VEC4, one per vertex`);
     triangles += idx.length / 3;
     const recorded = geometry.structures[id];
     if (recorded && recorded.triangleCount !== idx.length / 3) fail(`${id}: ${idx.length / 3} triangles, geometry.json says ${recorded.triangleCount}`);

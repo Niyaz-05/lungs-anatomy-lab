@@ -28,7 +28,9 @@ Built from the **HuBMAP Human Reference Atlas (HRA)** 3D reference organs by **K
 
 Some source mesh *names* were corrected to match their position. The pulmonary vein names are swapped left/right in the source, and a heart artery labelled as a pulmonary branch was excluded.
 
-Output `lungs.glb` has sha256 `d8a8a24c0ce28780564e4ad773b6357ee12e39b8c78d48260f3de38bbf409cf7`. The full record is in `src/lungs/generated/provenance.json`.
+`tools/bake-shading.mjs` then added a per-vertex attribute (`_TISSUE`: ambient occlusion and colour variation) for the real-tissue rendering. No positions were changed. The unbaked model has sha256 `d8a8a24c0ce28780564e4ad773b6357ee12e39b8c78d48260f3de38bbf409cf7`.
+
+Output `lungs.glb` has sha256 `34e61e6eca96b32e1eef4d241c957b1946e047e3a2a90ea179f564a53d48d7a8`. The full record is in `src/lungs/generated/provenance.json`.
 
 ## Explanatory text
 

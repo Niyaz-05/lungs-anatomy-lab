@@ -46,6 +46,23 @@ Results recorded on 2026-10-17 on Windows 11, Node 22.14.0, headless Chromium (P
 | `npm audit` | 0 vulnerabilities at install time |
 | Live site (2026-10-18) | **Pass**: https://lungs-anatomy-lab.vercel.app returns the page; `models/lungs.glb` is served with the recorded sha256 `d8a8a24c…`; the model renders in headless Chromium with no console errors |
 
+## Results: real-tissue look (2026-10-19)
+
+Re-run on Windows 11, Node 22.14.0, headless Chromium (software WebGL, which uses the automatic low-quality mode), after adding the real-tissue look and the Real · Lobe · Segment colour switch.
+
+| Check | Result |
+|---|---|
+| `npm run typecheck` | **Pass** |
+| `npm test` | **Pass**: 24/24, including real colours by default and tour steps that set their own colours |
+| `npm run validate:assets` | **Pass**: 68 nodes, 122,199 triangles, sha256 `34e61e6eca96…`, with the baked `_TISSUE` attribute on every mesh |
+| `npm run build` | **Pass** |
+| `npm run e2e` | **Pass**: 16/16. The full run had 15/16; the breathing test then passed after the fix below |
+
+Defects found and fixed:
+
+- **Breathing slowed down on slow devices.** The breathing clock advanced at most 0.05 s per frame, so with slow frames breathing nearly stopped (the E2E breathing test caught it under software WebGL). The cap is now 0.25 s per frame.
+- **Dark smudges on the trachea.** The hidden cartilage rings shaded the trachea in the bake. They no longer count as occluders for the airways.
+
 ## Defects found and fixed during QA
 
 - **The highlight swamped the lobe colours.** In the "Three lobes" tour step every lobe turned amber. A highlighted lung segment now keeps its own colour and stands out by opacity and a glow in its own hue.
@@ -56,6 +73,8 @@ Results recorded on 2026-10-17 on Windows 11, Node 22.14.0, headless Chromium (P
 - **Three of my own E2E assertions were wrong.** "lingula" correctly matches 4 items, and a hidden tag is part of a list button's text. The tests were corrected; the app was right.
 
 ## Not verified
+
+- **The real-tissue look on real GPUs.** High quality (clear coat and sheen) was reviewed in headless screenshots with `?quality=high`; its frame rate on real laptops and phones is not measured. The automatic switch to low quality on slow frames has not been tried on a real device.
 
 - **Physical devices and GPUs.** All browser tests used software WebGL in headless Chromium. Frame rate with breathing and about 1,600 airflow particles on a real mid-range laptop or phone is not measured.
 - **Other browsers.** Firefox and Safari were not run.

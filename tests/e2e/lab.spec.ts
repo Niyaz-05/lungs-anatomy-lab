@@ -72,11 +72,16 @@ test('a lobe highlights its segments and links to them', async ({ page }) => {
   await expect(detailTitle(page)).toHaveText('Right medial bronchus (B5)');
 });
 
-test('colour by lobe or segment changes the model colours', async ({ page }) => {
+test('the lungs look real by default; colour by lobe or segment paints them', async ({ page }) => {
   await open(page);
   await ready(page);
+  await expect(page.getByRole('radio', { name: 'Real' })).toHaveAttribute('aria-checked', 'true');
   const canvas = page.locator('.viewer canvas');
+  const real = await canvas.screenshot();
+  await page.getByRole('radio', { name: 'Lobe' }).click();
+  await page.waitForTimeout(600);
   const byLobe = await canvas.screenshot();
+  expect(Buffer.compare(real, byLobe)).not.toBe(0);
   await page.getByRole('radio', { name: 'Segment' }).click();
   await expect(page.getByRole('radio', { name: 'Segment' })).toHaveAttribute('aria-checked', 'true');
   await page.waitForTimeout(600);
