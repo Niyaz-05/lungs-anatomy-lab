@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { LabProvider, useLab } from './app/LabContext';
 import type { Mode } from './app/state';
 import { validateDefinition } from './contract/validate';
@@ -9,30 +9,8 @@ import { DetailPanel } from './ui/DetailPanel';
 import { BreathingPanel } from './ui/BreathingPanel';
 import { TourPanel } from './ui/TourPanel';
 import { AboutSheet } from './ui/AboutSheet';
-import type { ViewInsets } from './viewer/CameraRig';
-
-/** Window size, for laying the model out around the floating panels. */
-function useWindowSize() {
-  const [size, setSize] = useState(() => ({ w: window.innerWidth, h: window.innerHeight }));
-  useEffect(() => {
-    const onResize = () => setSize({ w: window.innerWidth, h: window.innerHeight });
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-  return size;
-}
-
-/** Space the floating panels take, matching the breakpoints in styles.css. */
-function panelInsets(w: number, h: number, hasSheet: boolean): ViewInsets {
-  if (w <= 767) return { left: 0, right: 0, top: 120, bottom: hasSheet ? Math.round(h * 0.46) + 120 : 100 };
-  const compact = w <= 1100;
-  return {
-    left: compact ? 266 : 318,
-    right: hasSheet ? (compact ? 336 : 388) : 0,
-    top: 70,
-    bottom: 80,
-  };
-}
+import { Sheet } from './ui/Sheet';
+import { isTouch, panelInsets, useChrome, useLayout, type SheetState } from './app/layout';
 
 const MODES: { id: Mode; label: string }[] = [
   { id: 'explore', label: 'Anatomy' },
@@ -76,8 +54,10 @@ function SidePanel() {
 function Lab() {
   const { def, state, dispatch } = useLab();
   const [about, setAbout] = useState(false);
-  // Phones: the structure panel opens over the model from the dock.
+  // Phones and tablets: the structure panel opens over the model from the dock.
   const [structuresOpen, setStructuresOpen] = useState(false);
+  const [sheet, setSheet] = useState<SheetState>('half');
+  const root = useRef<HTMLDivElement>(null);
   const closeAbout = useCallback(() => setAbout(false), []);
 
   useEffect(() => {
@@ -95,14 +75,34 @@ function Lab() {
   useEffect(() => {
     if (state.selected) setStructuresOpen(false);
   }, [state.selected]);
+  // Something new to read opens the sheet halfway.
+  useEffect(() => { setSheet('half'); }, [state.selected, state.mode]);
+  const toggleStructures = () => { if (!structuresOpen) setSheet('peek'); setStructuresOpen(!structuresOpen); };
 
   const hasSheet = state.mode !== 'explore' || state.selected !== null;
-  const win = useWindowSize();
-  const insets = useMemo(() => panelInsets(win.w, win.h, hasSheet), [win.w, win.h, hasSheet]);
+  // A structure's details (not a mode's own panel) are open: on phones and tablets they take the screen's top bar with them.
+  const detail = state.selected !== null && state.mode !== 'tour';
+  const { w, h, layout } = useLayout();
+  const chrome = useChrome(root);
+  const insets = useMemo(() => panelInsets(layout, w, h, { hasSheet, sheet, ...chrome }), [layout, w, h, hasSheet, sheet, chrome]);
+  const touch = useMemo(isTouch, []);
+  // Show what was picked: on a phone or tablet the camera frames the structure in the space above the sheet,
+  // and frames the whole model again when the details close.
+  const compact = layout !== 'desktop';
+  const picked = useRef<string | null>(null);
+  useEffect(() => {
+    const before = picked.current;
+    picked.current = state.selected;
+    if (!compact || state.mode === 'tour' || before === state.selected) return;
+    if (state.selected) dispatch({ type: 'camera', preset: state.camera.preset, focus: [state.selected] });
+    else if (before) dispatch({ type: 'camera', preset: state.camera.preset });
+    // The camera preset is read when the selection changes, not followed.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state.selected, compact, state.mode, dispatch]);
   const meshCount = def.structures.filter((s) => s.kind === 'mesh').length;
 
   return (
-    <div className="app" data-mode={state.mode}>
+    <div className="app" ref={root} data-mode={state.mode} data-layout={layout} data-sheet={hasSheet ? sheet : 'none'} data-detail={detail ? 'open' : 'closed'}>
       <main className="stage">
         <LabViewer insets={insets} />
       </main>
@@ -131,15 +131,15 @@ function Lab() {
       </aside>
 
       {hasSheet && (
-        <aside className="right glass" aria-label="Details">
+        <Sheet layout={layout} state={sheet} onState={setSheet} dismissible={detail} onClose={() => dispatch({ type: 'select', id: null })}>
           <SidePanel />
-        </aside>
+        </Sheet>
       )}
 
-      <Toolbar structuresOpen={structuresOpen} onStructures={() => setStructuresOpen((v) => !v)} />
+      <Toolbar structuresOpen={structuresOpen} onStructures={toggleStructures} />
 
       <footer className="studio-footer">
-        <span className="hint">Drag to rotate · Scroll to zoom · Click to inspect</span>
+        <span className="hint">{touch ? 'Drag to rotate · Pinch to zoom · Tap to inspect' : 'Drag to rotate · Scroll to zoom · Click to inspect'}</span>
         <button type="button" className="link" onClick={() => setAbout(true)}>Source &amp; credits</button>
       </footer>
 

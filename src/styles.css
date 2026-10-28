@@ -184,28 +184,75 @@ button.link[aria-pressed='true'], button.link[aria-current='step'] { color: var(
   .seg button { padding: 6px 7px; }
 }
 
-/* ── Phones ────────────────────────────────────────────── */
+/* ── Phones and tablets ───────────────────────────────────────────────────────
+   The layout comes from src/app/layout.ts as .app[data-layout]: `sheet` (phones and portrait tablets),
+   `landscape` (phones on their side) or `desktop`. --top-space and --dock-space are measured there. */
+.sheet-handle { display: none; }
+.app:not([data-layout='desktop']) .mobile-only { display: inline-flex !important; }
+.app:not([data-layout='desktop']) .left { display: none; }
+.app:not([data-layout='desktop']) .dock-structures { font-weight: 600; }
+.app:not([data-layout='desktop']) .dock-structures[aria-pressed='true'] { background: var(--ink); color: #fff; }
+.app:not([data-layout='desktop']) .dock-sep { display: none; }
+.app:not([data-layout='desktop']) .studio-footer .hint { display: none; }
+.app:not([data-layout='desktop']) .right { background: #fff; z-index: 10; overscroll-behavior: contain; }
+.app:not([data-layout='desktop']) .right > :is(.panel, .sheet) { padding-block-start: 0; }
+.app:not([data-layout='desktop']) .left.mobile-open { display: block; z-index: 20; background: var(--glass-strong); overscroll-behavior: contain; }
+.app:not([data-layout='desktop']) .sheet-handle { display: block; position: sticky; inset-block-start: 0; z-index: 1; inline-size: 100%; block-size: 24px; padding: 0; border: 0; border-radius: 0; background: #fff; cursor: grab; touch-action: none; }
+.sheet-handle span { display: block; inline-size: 40px; block-size: 5px; border-radius: 3px; background: var(--line-strong); margin: 9px auto 0; }
+.sheet-handle:hover span { background: var(--muted); }
+/* Modes: one row that scrolls sideways instead of wrapping. */
+.app:not([data-layout='desktop']) .modes { flex: 1; min-inline-size: 0; flex-wrap: nowrap; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; }
+.app:not([data-layout='desktop']) .modes::-webkit-scrollbar { display: none; }
+.app:not([data-layout='desktop']) .modes button { flex: 1 0 auto; padding: 8px 12px; white-space: nowrap; }
+
+/* Phones and portrait tablets: title, then modes, then the model; details in a bottom sheet. */
+.app[data-layout='sheet'] .identity { inset-block-start: calc(env(safe-area-inset-top) + 14px); inset-inline-start: calc(env(safe-area-inset-left) + 16px); }
+.app[data-layout='sheet'] .identity h1 { font-size: 1.5rem; margin-block: 2px 0; }
+.app[data-layout='sheet'] .identity-meta { display: none; }
+.app[data-layout='sheet'] .top-actions { inset-block-start: calc(env(safe-area-inset-top) + 74px); inset-inline: calc(env(safe-area-inset-left) + 12px) calc(env(safe-area-inset-right) + 12px); }
+.app[data-layout='sheet'] .left.mobile-open { inset: calc(var(--top-space, 120px) + 8px) 12px calc(var(--dock-space, 110px) + 8px); inline-size: auto; max-inline-size: 560px; margin-inline: auto; }
+.app[data-layout='sheet'] .right { inset: auto 0 0; margin-inline: auto; inline-size: 100%; max-inline-size: 720px; block-size: 38dvh; border-radius: 18px 18px 0 0; padding-block-end: env(safe-area-inset-bottom); transition: block-size 0.2s ease; }
+.app[data-layout='sheet'] .right[data-sheet='full'] { block-size: calc(100dvh - var(--top-space, 130px) - 10px - env(safe-area-inset-top)); }
+.app[data-layout='sheet'] .right[data-sheet='peek'] { block-size: 72px; overflow: hidden; inset-block-end: calc(var(--dock-space, 110px) + 8px); inline-size: calc(100% - 24px); border-radius: 16px; padding-block-end: 0; }
+.app[data-layout='sheet'] .dock { inset-block-end: calc(env(safe-area-inset-bottom) + 28px); padding: 5px; gap: 4px; max-inline-size: calc(100% - 24px); }
+.app[data-layout='sheet'] .studio-footer { inset-block-end: calc(env(safe-area-inset-bottom) + 6px); justify-content: center; }
+@media (max-width: 599px) {
+  /* Two dock rows on phones: camera views first, then Structures · Labels · Fit · Reset. */
+  .app[data-layout='sheet'] .dock .seg { order: 1; flex-basis: 100%; justify-content: center; }
+  .app[data-layout='sheet'] .dock .dock-structures { order: 2; }
+  .app[data-layout='sheet'] .dock .toolbar-check, .app[data-layout='sheet'] .dock > .secondary { order: 3; }
+  .app[data-layout='sheet'] .seg button { padding: 5px 6px; font-size: 0.76rem; }
+}
+
+/* Phones on their side: a slim top bar, the drawer on the left, the details on the right. */
+.app[data-layout='landscape'] .identity { inset-block-start: calc(env(safe-area-inset-top) + 10px); inset-inline-start: calc(env(safe-area-inset-left) + 14px); }
+.app[data-layout='landscape'] .eyebrow, .app[data-layout='landscape'] .identity-meta, .app[data-layout='landscape'] .studio-footer { display: none; }
+.app[data-layout='landscape'] .identity h1 { font-size: 1.15rem; margin: 6px 0 0; }
+.app[data-layout='landscape'] .top-actions { inset-block-start: calc(env(safe-area-inset-top) + 8px); inset-inline-end: calc(env(safe-area-inset-right) + 12px); max-inline-size: calc(100% - 230px); }
+.app[data-layout='landscape'] .modes button { padding: 5px 10px; }
+.app[data-layout='landscape'] .icon-button { inline-size: 38px; block-size: 38px; }
+.app[data-layout='landscape'] .left.mobile-open { inset: calc(var(--top-space, 52px) + 8px) auto calc(var(--dock-space, 60px) + 8px) calc(env(safe-area-inset-left) + 12px); inline-size: min(300px, 42vw); }
+.app[data-layout='landscape'] .right { inset: calc(var(--top-space, 52px) + 8px) calc(env(safe-area-inset-right) + 12px) calc(env(safe-area-inset-bottom) + 10px) auto; inline-size: min(46vw, 380px); }
+.app[data-layout='landscape'] .right[data-sheet='peek'] { inset-block-end: auto; block-size: 64px; overflow: hidden; }
+.app[data-layout='landscape'] .dock { inset-block-end: calc(env(safe-area-inset-bottom) + 8px); padding: 4px; gap: 3px; }
+.app[data-layout='landscape']:is([data-sheet='half'], [data-sheet='full']) .dock { margin-inline: calc(env(safe-area-inset-left) + 12px) auto; max-inline-size: calc(100% - min(46vw, 380px) - 44px); }
+.app[data-layout='landscape'] .seg button { padding: 4px 7px; font-size: 0.76rem; }
+
+/* While a structure's details are open the title and the mode buttons make way for them. */
+.app:not([data-layout='desktop'])[data-detail='open'] :is(.identity, .top-actions) { display: none; }
+.app:not([data-layout='desktop']) .sheet-handle, .app:not([data-layout='desktop']) .detail-head { touch-action: none; }
+.app:not([data-layout='desktop']) .detail-head { cursor: grab; }
+
+/* Fingers: tap targets of at least 44 px. */
+@media (pointer: coarse) {
+  .modes button, .seg button, .dock button, .icon-button, .dock .toolbar-check { min-block-size: 44px; }
+  .detail-head .ghost { min-inline-size: 44px; min-block-size: 44px; font-size: 1.1rem; }
+  .struct-list button { min-block-size: 40px; }
+  .chips button, .seg-toggle button, .small-button { min-block-size: 36px; }
+  .check input { inline-size: 20px; block-size: 20px; }
+  .app:not([data-layout='desktop']) .sheet-handle { block-size: 28px; }
+}
+
 @media (max-width: 767px) {
-  .mobile-only { display: inline-flex !important; }
-  .identity { inset-block-start: 14px; inset-inline-start: 16px; }
-  .identity h1 { font-size: 1.5rem; margin-block: 2px 0; }
-  .identity-meta { display: none; }
-  .top-actions { inset-block-start: 74px; inset-inline: 12px; }
-  .modes { flex: 1; }
-  .modes button { flex: 1; padding: 8px 4px; }
-  .left { display: none; }
-  .left.mobile-open { display: block; inset: auto 12px 120px; max-block-size: calc(100dvh - 260px); inline-size: auto; z-index: 20; background: var(--glass-strong); }
-  .right { inset: auto 12px 120px; inline-size: auto; max-block-size: 46dvh; background: var(--glass-strong); z-index: 10; }
-  .dock { inset-block-end: 28px; padding: 5px; gap: 4px; max-inline-size: calc(100% - 24px); }
-  /* Two rows on phones: camera views first, then Structures · Labels · Fit · Reset. */
-  .dock .seg { order: 1; flex-basis: 100%; justify-content: center; }
-  .dock .dock-structures { order: 2; }
-  .dock .toolbar-check, .dock > .secondary { order: 3; }
-  .dock-sep { display: none; }
-  .seg button { padding: 5px 6px; font-size: 0.76rem; }
-  .dock-structures { font-weight: 600; }
-  .dock-structures[aria-pressed='true'] { background: var(--ink); color: #fff; }
-  .studio-footer { inset-block-end: 6px; justify-content: center; }
-  .studio-footer .hint { display: none; }
   .about-sheet { border-radius: 0; inline-size: 100%; padding-block-start: 56px; }
 }

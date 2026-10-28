@@ -18,7 +18,7 @@ async function ready(page: Page) {
 const detailTitle = (page: Page) => page.locator('#detail-title');
 const listButton = (page: Page, name: string | RegExp) => page.locator('.struct-list button', { hasText: name });
 
-test('loads the lungs without console errors and with a clean main screen', async ({ page }) => {
+test('loads the lungs without console errors and with a clean main screen @smoke', async ({ page }) => {
   const errors = await open(page);
   await ready(page);
   await expect(page.getByRole('heading', { name: 'Human Lungs', level: 1 })).toBeVisible();
@@ -178,7 +178,7 @@ test('guided tour navigates forward, back and finishes', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Anatomy' })).toHaveAttribute('aria-pressed', 'true');
 });
 
-test('phone layout: structures open from the dock and details follow a pick', async ({ page }) => {
+test('phone layout: structures open from the dock and details follow a pick @smoke', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await open(page);
   await ready(page);
@@ -205,7 +205,7 @@ test('the About sheet holds the HuBMAP credits', async ({ page }) => {
   await expect(dialog).toHaveCount(0);
 });
 
-test('without WebGL the learning content still works', async ({ page }) => {
+test('without WebGL the learning content still works @smoke', async ({ page }) => {
   await open(page, '?nowebgl');
   await expect(page.getByRole('heading', { name: '3D view unavailable' })).toBeVisible();
   await listButton(page, /^Carina$/).click();

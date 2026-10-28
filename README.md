@@ -2,6 +2,8 @@
 
 **Live:** https://lungs-anatomy-lab.vercel.app
 
+Works on phones and tablets: the details rise from the bottom in a sheet you can drag, fold or close with a swipe down, and picking a structure frames it above the sheet.
+
 An interactive 3D model of the human lungs for secondary-school and first-year biology:
 
 - **Anatomy:** select, search and isolate the larynx cartilages, trachea and carina, main, lobar and segmental bronchi, the 5 lobes and 20 bronchopulmonary segments, the hilum and the pulmonary vessels.

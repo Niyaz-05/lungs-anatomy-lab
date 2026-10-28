@@ -3,6 +3,7 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { OrbitControls, useGLTF, useProgress } from '@react-three/drei';
 import * as THREE from 'three';
 import { useLab } from '../app/LabContext';
+import { isTouch } from '../app/layout';
 import { LungModel, MODEL_URL } from './LungModel';
 import { CameraRig, type ViewInsets } from './CameraRig';
 import { AirflowParticles } from './AirflowParticles';
@@ -148,10 +149,16 @@ export function LabViewer({ insets = NO_INSETS }: { insets?: ViewInsets }) {
         <SceneBoundary key={attempt} onError={(e) => setError(e.message || 'Unknown error')}>
           <Canvas
             frameloop={animating ? 'always' : 'demand'}
-            dpr={[1, 2]}
+            // Phones and tablets: a lower pixel ratio keeps the frame rate up on small GPUs.
+            dpr={isTouch() ? [1, 1.5] : [1, 2]}
             camera={{ fov: 32, near: 0.005, far: 5, position: [0, 0, radius * 4] }}
             gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
-            onPointerMissed={(e) => { if (e.type === 'click') dispatch({ type: 'hover', id: null }); }}
+            onPointerMissed={(e) => {
+              if (e.type !== 'click') return;
+              dispatch({ type: 'hover', id: null });
+              // On a touch screen there is no Esc key: a tap on empty space closes the details.
+              if (isTouch() && state.selected && state.mode !== 'tour') dispatch({ type: 'select', id: state.selected });
+            }}
             onCreated={({ gl }) => {
               gl.domElement.addEventListener('webglcontextlost', (ev) => {
                 ev.preventDefault();

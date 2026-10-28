@@ -72,6 +72,16 @@ Defects found and fixed:
 - **Segment shades were too similar** in "colour by segment". The shade spread was widened, adjacent segment numbers alternate light and dark, and opacity is higher in that mode.
 - **Three of my own E2E assertions were wrong.** "lingula" correctly matches 4 items, and a hidden tag is part of a list button's text. The tests were corrected; the app was right.
 
+## Phone and tablet layouts
+
+Added 2026-10-28, the same layer as the heart lab: `src/app/layout.ts` (the layout from the screen size: `desktop`, `sheet` for phones and portrait tablets, `landscape` for phones on their side), `src/ui/Sheet.tsx` (the details as a bottom sheet with a handle: tap to step peek / half / full, drag to follow the finger, drag down or flick to close) and a "Phones and tablets" block in `src/styles.css` (safe-area insets, finger-sized controls, a mode row that scrolls sideways). Picking a structure frames it above the sheet and hides the title and mode buttons until the details close; a tap on empty space closes them too.
+
+`tests/e2e/responsive.spec.ts` (the same file in every lab) runs at 390×844, 844×390, 768×1024, 820×1180, 1024×768 and 1366×820 (touch emulation below 1024 px): no horizontal scroll; title, modes, dock and sheet on screen and not overlapping; room left for the model; finger-sized controls; the sheet folds, opens and expands by tap, keyboard and drag; the picked structure's label stays above the sheet; closing by ✕, by a tap on empty space and by dragging down (real touch events); a mode's own panel keeps the mode buttons and cannot be dismissed; every mode fits and scrolls to its end. Screenshots are in `docs/screenshots/responsive/`.
+
+**Result (2026-10-28):** the whole GPU suite (this lab's own scenarios and the layout checks), installed Chrome, AMD Radeon integrated GPU: **47 passed in 4.3 min**.
+
+**Not verified:** physical phones and tablets (only Chrome's device emulation at the six sizes), notches and safe areas on a real device, multi-finger gestures, the on-screen keyboard over the search box, and Safari and Firefox.
+
 ## Not verified
 
 - **The real-tissue look on real GPUs.** High quality (clear coat and sheen) was reviewed in headless screenshots with `?quality=high`; its frame rate on real laptops and phones is not measured. The automatic switch to low quality on slow frames has not been tried on a real device.
