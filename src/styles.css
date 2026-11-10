@@ -44,6 +44,7 @@ button, input { font: inherit; color: inherit; }
 .identity { position: absolute; inset-block-start: 26px; inset-inline-start: 28px; pointer-events: none; z-index: 5; }
 .eyebrow { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
 .status-dot { inline-size: 7px; block-size: 7px; border-radius: 50%; background: var(--rich); box-shadow: 0 0 0 3px rgb(200 68 59 / 0.15); }
+.brand-logo { display: block; block-size: 18px; inline-size: auto; padding-inline-end: 8px; border-inline-end: 1px solid var(--muted); }
 .identity h1 { font-size: 2.1rem; font-weight: 650; letter-spacing: -0.02em; margin-block: 6px 2px; }
 .identity-meta { font-size: 0.78rem; color: var(--muted); }
 
